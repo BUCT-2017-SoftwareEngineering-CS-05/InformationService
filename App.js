@@ -1,114 +1,93 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+// Import dependencies
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from 'react-native-elements';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+// Import components
+import { MuseumListHome, MuseumListDetail } from './components/Museum/MuseumList';
+import { MuseumStatisticsHome, MuseumStatisticsDetail } from './components/Museum/MuseumStatistics';
+import { UserHome } from './components/User/User';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
+// Disable warning
+console.disableYellowBox = true;
+
+
+// StackNavigator (Home->Detail) of MuseumList and MuseumStatistics Screen
+
+const Stack = createStackNavigator();
+
+function MuseumListStackScreen(){
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <Stack.Navigator
+      headerMode='none'
+    >
+      <Stack.Screen name="MuseumList" component={ MuseumListHome } />
+      <Stack.Screen name="MuseumListDetail" component={ MuseumListDetail } />
+    </Stack.Navigator>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+function MuseumStatisticsStackScreen(){
+  return (
+    <Stack.Navigator
+      headerMode='none'
+    >
+      <Stack.Screen name="MuseumStatistics" component={ MuseumStatisticsHome } />
+      <Stack.Screen name="MuseumStatisticsDetail" component={ MuseumStatisticsDetail } />
+    </Stack.Navigator>
+  );
+}
 
-export default App;
+
+// TopTabNavigator of MuseumList and MuseumStatistics Screen
+
+const MuseumTopTab = createMaterialTopTabNavigator();
+
+function MuseumTopNavigator() {
+  return (
+    <MuseumTopTab.Navigator>
+      <MuseumTopTab.Screen name="List" component={ MuseumListStackScreen } />
+      <MuseumTopTab.Screen name="Statistics" component={ MuseumStatisticsStackScreen } />
+    </MuseumTopTab.Navigator>
+  );
+}
+
+
+// BottomTabNavigator of Museum and User Screen
+// Initial Home Screen
+
+const BottomTab = createBottomTabNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <BottomTab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon:({ focused, color, size })=>{
+            let iconName;
+            if(route.name==='Museum')iconName='home'
+            else if(route.name==='User')iconName='person'
+            return <Icon
+              name={iconName}
+              type='octicon'
+              size={size}
+              color={color}
+              containerStyle={{marginTop:8}}
+            />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'dodgerblue',
+          inactiveTintColor: 'gray',
+        }}
+      >
+        <BottomTab.Screen name="Museum" component={ MuseumTopNavigator } />
+        <BottomTab.Screen name="User" component={ UserHome } />
+      </BottomTab.Navigator>
+    </NavigationContainer>
+  );
+}
