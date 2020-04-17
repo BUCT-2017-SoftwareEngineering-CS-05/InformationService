@@ -1,13 +1,15 @@
 // Import dependencies
-import * as React from 'react';
+import React, { Component } from "react";
 import { View, Text, AsyncStorage } from "react-native";
 
-function UserHome() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>UserHome!</Text>
-        </View>
-    );
+class UserHome extends Component{
+    render() {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>UserHome!</Text>
+            </View>
+        );
+    }
 }
 
 

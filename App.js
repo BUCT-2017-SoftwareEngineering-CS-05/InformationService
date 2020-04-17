@@ -1,5 +1,5 @@
 // Import dependencies
-import * as React from 'react';
+import React, { Component } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -20,24 +20,26 @@ console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
-function MuseumListStackScreen(){
+function MuseumListStackScreen( {navigation,route} ){
+  
   return (
     <Stack.Navigator
       headerMode='none'
     >
-      <Stack.Screen name="MuseumList" component={ MuseumListHome } />
-      <Stack.Screen name="MuseumListDetail" component={ MuseumListDetail } />
+      <Stack.Screen name="MuseumListHome" component={ MuseumListHome } navigation={navigation} route={route} />
+      <Stack.Screen name="MuseumListDetail" component={ MuseumListDetail} navigation={navigation} route={route} />
     </Stack.Navigator>
   );
 }
 
-function MuseumStatisticsStackScreen(){
+function MuseumStatisticsStackScreen({navigation,route}){
   return (
     <Stack.Navigator
       headerMode='none'
+      initialRouteName='MuseumStatisticsDetail'
     >
-      <Stack.Screen name="MuseumStatistics" component={ MuseumStatisticsHome } />
-      <Stack.Screen name="MuseumStatisticsDetail" component={ MuseumStatisticsDetail } />
+      <Stack.Screen name="MuseumStatisticsHome" component={ MuseumStatisticsHome } navigation={navigation} route={route} />
+      <Stack.Screen name="MuseumStatisticsDetail" component={ MuseumStatisticsDetail } navigation={navigation} route={route} />
     </Stack.Navigator>
   );
 }
