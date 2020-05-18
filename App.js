@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from 'react-native-elements';
 
 // Import components
-import { MuseumListHome, MuseumListDetail } from './components/Museum/MuseumList';
+import { MuseumListHome, MuseumListDetail, MuseumListObject, MuseumListExhibition, MuseumListActivity } from './components/Museum/MuseumList';
 import { MuseumStatisticsHome, MuseumStatisticsDetail } from './components/Museum/MuseumStatistics';
 import { UserHome } from './components/User/User';
 
@@ -28,6 +28,9 @@ function MuseumListStackScreen( {navigation,route} ){
     >
       <Stack.Screen name="MuseumListHome" component={ MuseumListHome } navigation={navigation} route={route} />
       <Stack.Screen name="MuseumListDetail" component={ MuseumListDetail} navigation={navigation} route={route} />
+      <Stack.Screen name="MuseumListObject" component={ MuseumListObject} navigation={navigation} route={route} />
+      <Stack.Screen name="MuseumListExhibition" component={ MuseumListExhibition} navigation={navigation} route={route} />
+      <Stack.Screen name="MuseumListActivity" component={ MuseumListActivity} navigation={navigation} route={route} />
     </Stack.Navigator>
   );
 }
