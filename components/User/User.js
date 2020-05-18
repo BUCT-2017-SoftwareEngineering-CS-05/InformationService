@@ -80,6 +80,7 @@ function UserControl({ navigation }) {
           else{
             await AsyncStorage.setItem('usertoken',json['userpwd'])
             await AsyncStorage.setItem('userid',json['userid'])
+            await AsyncStorage.setItem('coright',json['coright'])
             dispatch({ type: 'SIGN_IN', token: json['userpwd'] })
           }
         }
@@ -101,6 +102,7 @@ function UserControl({ navigation }) {
           });
           await AsyncStorage.setItem('usertoken',data.password)
           await AsyncStorage.setItem('userid',data.userid )
+          await AsyncStorage.setItem('coright','1')
           dispatch({ type: 'SIGN_IN', token: data.password })
         }
 
