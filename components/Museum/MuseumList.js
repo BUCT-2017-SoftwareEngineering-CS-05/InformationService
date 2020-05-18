@@ -1,8 +1,8 @@
 // Import dependencies
-import React, { Component } from "react";
-import { View, Text, AsyncStorage } from "react-native";
-import {Button} from 'react-native-elements'
-import { useRoute } from '@react-navigation/native';
+import React, { Component } from "react"
+import { View, Text, AsyncStorage } from "react-native"
+import { Button } from 'react-native-elements'
+import { useRoute } from '@react-navigation/native'
 
 
 class MuseumListHome extends Component{
