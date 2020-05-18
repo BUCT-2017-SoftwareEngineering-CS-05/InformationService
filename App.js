@@ -17,7 +17,7 @@ import {
   MuseumStatisticsDetail_good_fuwu,
   MuseumStatisticsDetail_good_huanjing,
 } from './components/Museum/MuseumStatistics';
-import {UserHome} from './components/User/User';
+import { UserControl } from './components/User/User';
 
 // Disable warning
 console.disableYellowBox = true;
@@ -140,7 +140,7 @@ export default function App() {
           inactiveTintColor: 'gray',
         }}>
         <BottomTab.Screen name="Museum" component={MuseumTopNavigator} />
-        <BottomTab.Screen name="User" component={UserHome} />
+        <BottomTab.Screen name="User" component={ UserControl } />
       </BottomTab.Navigator>
     </NavigationContainer>
   );
