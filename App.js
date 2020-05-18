@@ -9,7 +9,7 @@ import { Icon } from 'react-native-elements';
 // Import components
 import { MuseumListHome, MuseumListDetail, MuseumListObject, MuseumListExhibition, MuseumListActivity } from './components/Museum/MuseumList';
 import { MuseumStatisticsHome, MuseumStatisticsDetail } from './components/Museum/MuseumStatistics';
-import { UserHome } from './components/User/User';
+import { UserControl } from './components/User/User';
 
 
 // Disable warning
@@ -91,7 +91,7 @@ export default function App() {
         }}
       >
         <BottomTab.Screen name="Museum" component={ MuseumTopNavigator } />
-        <BottomTab.Screen name="User" component={ UserHome } />
+        <BottomTab.Screen name="User" component={ UserControl } />
       </BottomTab.Navigator>
     </NavigationContainer>
   );

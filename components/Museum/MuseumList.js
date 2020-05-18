@@ -1,4 +1,5 @@
 // Import dependencies
+<<<<<<< HEAD
 import React, { Component } from "react";
 import { FlatList, StyleSheet, View, AsyncStorage, TextInput, Alert, ScrollView, TouchableOpacity, Linking} from "react-native";
 import { Button, ListItem, SearchBar, Rating, AirbnbRating, Card, Icon, Overlay, Text } from 'react-native-elements'
@@ -32,6 +33,12 @@ list = [
         // hidden: false
     },
 ]
+=======
+import React, { Component } from "react"
+import { View, Text, AsyncStorage } from "react-native"
+import { Button } from 'react-native-elements'
+import { useRoute } from '@react-navigation/native'
+>>>>>>> 3cca1776f21a7fdb6be4a36d0f08151340232b9f
 
 class MuseumListHome extends Component {
     constructor(props) {

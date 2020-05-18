@@ -1,6 +1,6 @@
 // Import dependencies
 import React, { Component } from "react";
-import { View, Text, AsyncStorage } from "react-native";
+import { View, Text } from "react-native";
 
 
 class MuseumStatisticsHome extends Component{
