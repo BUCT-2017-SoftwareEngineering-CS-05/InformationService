@@ -142,12 +142,26 @@ class MuseumListDetail extends Component {
             comment: "",
             rateOverlayVisible: false,
             introOverlayVisible: false,
+            userid: "",
+            coright: "0",
         };
     
     }
     componentWillMount(){
         this.fetchData()
+        this.getUserid()
     } 
+    async getUserid(){
+        try{
+            let id
+            let coright
+            id = await AsyncStorage.getItem('userid');
+            coright = await AsyncStorage.getItem('coright');
+            this.setState({userid:id,coright:coright})
+        }catch(error){
+            Alert.alert(error)
+        }
+    }
     async fetchData(){
         await fetch('http://10.0.2.2:14816/api/maintables')
         .then((response) => response.json())
@@ -160,32 +174,38 @@ class MuseumListDetail extends Component {
             alert(error)
             );
     } 
-    rateCommit = () => {
-        let rateData = {
-            "midex": this.props.route.params.id,
-            "userid": "user22",
-            "exhscore": this.state.exhibitionRate,
-            "serscore": this.state.serviceRate,
-            "envscore": this.state.environmentRate,
-            "msg": this.state.comment
-        }
-        fetch('http://10.0.2.2:14816/api/Comments', {
-            method: 'POST', // or 'PUT'
-            headers: { Accept: 'application/json',
-                       'Content-Type': 'application/json',},
-            body: JSON.stringify(rateData), // data can be `string` or {object}!
-        })
-        .then(response => {
-            if(response.status == 409) {
-                alert("您已评价过该博物馆，可在用户界面进行修改！")
-            }else if(response.status == 201){
-                Alert.alert('评价成功')
+    rateCommit = async() => {
+        await this.getUserid()
+        if(this.state.coright === 0 || this.state.userid === null){
+            Alert.alert('没有权限！')
+            Alert.alert(this.state.coright)
+        }else{
+            Alert.alert(this.state.coright)
+            let rateData = {
+                "midex": this.props.route.params.id,
+                "userid": this.state.userid,
+                "exhscore": this.state.exhibitionRate,
+                "serscore": this.state.serviceRate,
+                "envscore": this.state.environmentRate,
+                "msg": this.state.comment
             }
-        })
-        .catch(error =>
-            alert(error)
-            );
-        
+            fetch('http://10.0.2.2:14816/api/Comments', {
+                method: 'POST', // or 'PUT'
+                headers: { Accept: 'application/json',
+                           'Content-Type': 'application/json',},
+                body: JSON.stringify(rateData), // data can be `string` or {object}!
+            })
+            .then(response => {
+                if(response.status == 409) {
+                    alert("您已评价过该博物馆，可在用户界面进行修改！")
+                }else if(response.status == 201){
+                    Alert.alert('评价成功！')
+                }
+            })
+            .catch(error =>
+                alert(error)
+                );
+        }
     }
     render() {
         let data = {}
@@ -458,7 +478,11 @@ class MuseumListObject extends Component{
     keyExtractor = (item, index) => index.toString()//flatlist
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flex: 1}}>
+                <View style={{justifyContent: 'center', height: '20%',backgroundColor:'white'}}>
+                    <Text style={styles.detialTitle}>藏品</Text>
+                </View>
+                <View style={{height: '0.2%'}}></View>
                 <FlatList
                     keyExtractor={this.keyExtractor}
                     data={this.state.data}
