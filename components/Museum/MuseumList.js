@@ -143,7 +143,7 @@ class MuseumListDetail extends Component {
             rateOverlayVisible: false,
             introOverlayVisible: false,
             userid: "",
-            coright: "0",
+            coright: '0',
         };
     
     }
@@ -156,8 +156,8 @@ class MuseumListDetail extends Component {
             let id
             let coright
             id = await AsyncStorage.getItem('userid');
-            coright = await AsyncStorage.getItem('coright');
-            this.setState({userid:id,coright:coright})
+            // coright = await AsyncStorage.getItem('coright');
+            this.setState({userid:id})
         }catch(error){
             Alert.alert(error)
         }
@@ -176,7 +176,7 @@ class MuseumListDetail extends Component {
     } 
     rateCommit = async() => {
         await this.getUserid()
-        if(this.state.coright === 0 || this.state.userid === null){
+        if(this.state.coright === '0' || this.state.userid === null){
             Alert.alert('没有权限！')
             Alert.alert(this.state.coright)
         }else{
