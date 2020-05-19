@@ -156,8 +156,8 @@ class MuseumListDetail extends Component {
             let id
             let coright
             id = await AsyncStorage.getItem('userid');
-            // coright = await AsyncStorage.getItem('coright');
-            this.setState({userid:id})
+            coright = await AsyncStorage.getItem('coright');
+            this.setState({userid:id, coright:coright})
         }catch(error){
             Alert.alert(error)
         }
@@ -176,11 +176,9 @@ class MuseumListDetail extends Component {
     } 
     rateCommit = async() => {
         await this.getUserid()
-        if(this.state.coright === '0' || this.state.userid === null){
-            Alert.alert('没有权限！')
-            Alert.alert(this.state.coright)
+        if(this.state.coright === null || this.state.userid === null || this.state.coright === '0'){
+            Alert.alert('没有评价权限！')
         }else{
-            Alert.alert(this.state.coright)
             let rateData = {
                 "midex": this.props.route.params.id,
                 "userid": this.state.userid,
