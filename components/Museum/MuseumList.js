@@ -3,35 +3,6 @@ import React, { Component } from "react";
 import { FlatList, StyleSheet, View, AsyncStorage, TextInput, Alert, ScrollView, TouchableOpacity, Linking, Image} from "react-native";
 import { Button, ListItem, SearchBar, Rating, AirbnbRating, Card, Icon, Overlay, Text } from 'react-native-elements'
 import { useRoute } from '@react-navigation/native';
-list = [
-    {
-        midex: 2,
-        mname: '中国国家博物馆1',
-        picture_address: 'https://img.dpm.org.cn/Uploads/Picture/dc/51[1024].jpg',
-        maddress: '我也不知道1',
-        mbase: '中国国家博物馆是代表国家收藏、研究、展示、阐释能够充分反映中华优秀传统文化、革命文化和社会主义先进文化代表性物证的最高机构，是国家最高历史文化艺术殿堂和文化客厅。',
-        mopentime: '09:00开馆时间16:00停止入馆16:30观众退场17:00闭馆时间周六延长至晚9点闭馆-->每周一例行闭馆',
-        // hidden: false
-    },
-    {
-        midex: 3,
-        mname: '中国国家博物馆2',
-        picture_address: 'https://img.dpm.org.cn/Uploads/Picture/dc/51[1024].jpg',
-        maddress: '我也不知道2',
-        mbase: '中国国家博物馆是代表国家收藏、研究、展示、阐释能够充分反映中华优秀传统文化、革命文化和社会主义先进文化代表性物证的最高机构，是国家最高历史文化艺术殿堂和文化客厅。',
-        mopentime: '09:00开馆时间16:00停止入馆16:30观众退场17:00闭馆时间周六延长至晚9点闭馆-->每周一例行闭馆',
-        // hidden: false
-    },
-    {
-        midex: 4,
-        mname: '中国国家博物馆3',
-        picture_address: 'https://img.dpm.org.cn/Uploads/Picture/dc/51[1024].jpg',
-        maddress: '我也不知道3',
-        mbase: '中国国家博物馆是代表国家收藏、研究、展示、阐释能够充分反映中华优秀传统文化、革命文化和社会主义先进文化代表性物证的最高机构，是国家最高历史文化艺术殿堂和文化客厅。',
-        mopentime: '09:00开馆时间16:00停止入馆16:30观众退场17:00闭馆时间周六延长至晚9点闭馆-->每周一例行闭馆',
-        // hidden: false
-    },
-]
 
 class MuseumListHome extends Component {
     constructor(props) {
@@ -88,11 +59,8 @@ class MuseumListHome extends Component {
                     <ListItem
                         title={item.mname}
                         titleStyle={styles.title}
-                        // subtitle={item.subtitle}
-                        // leftAvatar={{ style: styles.avater, source: { uri: item.picture_address } }}
                         bottomDivider
-                        // chevron
-                        onPress={() => this.props.navigation.navigate('MuseumListDetail', { id: item.midex })}//页面跳转并传递点击的项目的标识
+                        onPress={() => this.props.navigation.navigate('MuseumListDetail', { id: item.midex, name: item.mname })}//页面跳转并传递点击的项目的标识
                     />
             )
     )}
@@ -101,7 +69,6 @@ class MuseumListHome extends Component {
         const { search } = this.state;
 
         return (
-            // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <View>
                 {/* 搜索栏 */}
                 <SearchBar
@@ -121,11 +88,6 @@ class MuseumListHome extends Component {
                     //解决刷新问题，查的，不知道为嘛
                     handleMethod = {({viewableItems}) => this.handleViewableItemsChanged(viewableItems)}
                 />
-                {/* <Text>MuseumListHome!</Text>
-                <Button
-                    title={`Go to Detail and change num to 999`}
-                    onPress={() => this.props.navigation.navigate('MuseumListDetail',{num:999})}
-                /> */}
             </View>
         );
     }
@@ -303,7 +265,7 @@ class MuseumListDetail extends Component {
                     </TouchableOpacity>
                     <View style={{height: '1%'}}></View>
                     <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'18%',backgroundColor:'white'}}
-                                    onPress={() => this.props.navigation.navigate('MuseumListObject', { id: this.props.route.params.id })}
+                                    onPress={() => this.props.navigation.navigate('MuseumListNews', { name: this.props.route.params.name })}
                                     >
                     <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
                         <Icon
@@ -329,7 +291,7 @@ class MuseumListDetail extends Component {
                 {/* 简介 */}
                 <Overlay 
                     isVisible={this.state.introOverlayVisible} 
-                    onBackdropPress={() => this.setState({ rateOverlayVisible : false })}
+                    onBackdropPress={() => this.setState({ introOverlayVisible : false })}
                     overlayStyle={styles.evaluationOverlay}
                     fullScreen={true}
                 >
@@ -339,17 +301,12 @@ class MuseumListDetail extends Component {
                     <ScrollView>
                         <Text style={{fontSize: 20}}>{data.mbase}</Text>
                     </ScrollView>
-                    <View style={{height: '2%'}}></View>
-                    <View >
-                        <Button title="返回" onPress={() => this.setState({ introOverlayVisible : false })} />
-                    </View>
                 </Overlay>
                 {/* 评价 */}
                 <Overlay 
                     isVisible={this.state.rateOverlayVisible} 
                     onBackdropPress={() => this.setState({ rateOverlayVisible : false })}
                     overlayStyle={styles.evaluationOverlay}
-                    // fullScreen={true}
                 >
                     <View style={{ flexDirection:'row', justifyContent: 'center'}}>
                         <Text style={styles.ratingTextContiner}>{"服务态度"}</Text>
@@ -360,7 +317,6 @@ class MuseumListDetail extends Component {
                             size={20}
                             onFinishRating={rating => this.setState({serviceRate: rating})}
                         />
-                        {/* <Text style={styles.ratingText}>{this.state.serviceRate}</Text> */}
                     </View>
                     <View style={{ flexDirection:'row', justifyContent: 'center' }}>
                         <Text style={styles.ratingTextContiner}>{"馆内环境"}</Text>
@@ -371,7 +327,6 @@ class MuseumListDetail extends Component {
                             size={20}
                             onFinishRating={rating => this.setState({environmentRate: rating})}
                         />
-                        {/* <Text style={styles.ratingText}>{this.state.environmentRate}</Text> */}
                     </View>
                     <View style={{ flexDirection:'row', justifyContent: 'center' }}>
                         <Text style={styles.ratingTextContiner}>{"展览质量"}</Text>
@@ -382,7 +337,6 @@ class MuseumListDetail extends Component {
                             size={20}
                             onFinishRating={rating => this.setState({exhibitionRate: rating})}
                         />
-                        {/* <Text style={styles.ratingText}>{this.state.collectionsRate}</Text> */}
                     </View>
                     <View style={styles.evaluationInputContiner}>
                         <Text style={styles.ratingTextContiner}>{"评价："}</Text>
@@ -392,7 +346,6 @@ class MuseumListDetail extends Component {
                             multiline={true}
                             numberOfLines={8}
                             maxLength={140}
-                            // defaultValue={"请输入评价"}
                             value={this.state.comment}
                         />
                     </View>
@@ -444,9 +397,7 @@ class MuseumListObject extends Component{
                     title={item.oname}
                     titleStyle={{
                         fontSize: 24,
-                        // marginLeft: "10%",
                     }}
-                    // subtitle={item.subtitle}
                     leftAvatar={{  source: { uri: item.ophoto } }}
                     bottomDivider
                     onPress={() => this.setState({isVisible:index}) }//页面跳转并传递点击的项目的标识
@@ -454,7 +405,7 @@ class MuseumListObject extends Component{
 
                 <Overlay 
                     isVisible={isVisible} 
-                    onBackdropPress={() => this.setState({ rateOverlayVisible : false })}
+                    onBackdropPress={() => this.setState({ isVisible: -1 })}
                     overlayStyle={styles.evaluationOverlay}
                     fullScreen={true}
                 >
@@ -466,10 +417,6 @@ class MuseumListObject extends Component{
                         <View style={{height: '1%'}}></View>
                         <Text style={{fontSize: 20}}>{item.ointro}</Text>
                     </ScrollView>
-                    <View style={{height: '2%'}}></View>
-                    <View >
-                        <Button title="返回" onPress={() => this.setState({ isVisible : -1 })} />
-                    </View>
                 </Overlay>
             </View>
         )}
@@ -488,7 +435,6 @@ class MuseumListObject extends Component{
                     //解决刷新问题，查的，不知道为嘛
                     handleMethod = {({viewableItems}) => this.handleViewableItemsChanged(viewableItems)}
                 />
-                {/* <Text>{this.props.route.params.id}</Text> */}
             </View>
         );
     }
@@ -530,15 +476,13 @@ class MuseumListExhibition extends Component{
                 <ListItem
                     title={item.ename}
                     titleStyle={styles.title}
-                    // subtitle={item.subtitle}
-                    // leftAvatar={{ style: styles.avater, source: { uri: item.picture_address } }}
                     bottomDivider
                     onPress={() => this.setState({isVisible:index}) }//页面跳转并传递点击的项目的标识
                 />
 
                 <Overlay 
                     isVisible={isVisible} 
-                    onBackdropPress={() => this.setState({ rateOverlayVisible : false })}
+                    onBackdropPress={() => this.setState({ isVisible: -1 })}
                     overlayStyle={styles.evaluationOverlay}
                     fullScreen={true}
                 >
@@ -548,10 +492,6 @@ class MuseumListExhibition extends Component{
                     <ScrollView>
                         <Text style={{fontSize: 20}}>{item.eintro}</Text>
                     </ScrollView>
-                    <View style={{height: '2%'}}></View>
-                    <View >
-                        <Button title="返回" onPress={() => this.setState({ isVisible : -1 })} />
-                    </View>
                 </Overlay>
             </View>
     )}
@@ -570,7 +510,6 @@ class MuseumListExhibition extends Component{
                     //解决刷新问题，查的，不知道为嘛
                     handleMethod = {({viewableItems}) => this.handleViewableItemsChanged(viewableItems)}
                 />
-                {/* <Text>{this.props.route.params.id}</Text> */}
             </View>
         );
     }
@@ -605,25 +544,9 @@ class MuseumListActivity extends Component{
             <ListItem
                 title={item.name}
                 titleStyle={styles.title}
-                // subtitle={item.subtitle}
-                // leftAvatar={{ style: styles.avater, source: { uri: item.picture_address } }}
                 bottomDivider
                 onPress={() => Linking.openURL(item.url) }//页面跳转并传递点击的项目的标识
             />
-        //     this.state.isVisible === index
-        //     ?<TouchableOpacity onPress={() =>{this.setState({isVisible: -1})}}>
-        //         <View style={styles.showItemContainer}>
-        //             <Text style={styles.showItemTitle}>{item.name}</Text>
-        //             <Text style={styles.showItemTitle}>{index}</Text>
-        //             {/* <View style={{width: "100%", borderTopWidth: 2, borderColor: 'black', marginVertical: 10}} />
-        //             <Text style={styles.showItemContent}>{item.atime}</Text> */}
-        //         </View>
-        //     </TouchableOpacity>
-        //     :<TouchableOpacity onPress={() =>{this.setState({isVisible: index})}}>
-        //     <View style={styles.showItemContainer}>
-        //         <Text style={styles.showItemTitle}>{item.aname}</Text>
-        //     </View>
-        // </TouchableOpacity>
     )}
     keyExtractor = (item, index) => index.toString()//flatlist
     render() {
@@ -640,12 +563,103 @@ class MuseumListActivity extends Component{
                     //解决刷新问题，查的，不知道为嘛
                     handleMethod = {({viewableItems}) => this.handleViewableItemsChanged(viewableItems)}
                 />
-                {/* <Text>{this.props.route.params.id}</Text> */}
             </View>
         );
     }
 }
+class MuseumListNews extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+            isVisible: -1,
+        };
+    }
+    componentWillMount(){
+        this.fetchData()
+    } 
+    async fetchData(){
+        let url='http://10.0.2.2:14816/api/News/One/'
+        url = url + this.props.route.params.name.toString()
+        await fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({
+                data : data
+            })
+        })
+        .catch(error =>
+            alert(error)
+            );
+    } 
+    renderItem = ({item,index}) => {
+        // Alert.alert(item.Title)
+        let isVisible = false
+        if(index === this.state.isVisible){
+            isVisible = true
+        }else{
+            isVisible = false
+        }
+        let Analyseresult = "中立新闻"
+        if(item.analyseresult == "positive"){
+            Analyseresult = "正面新闻"
+        }else if(item.analyseresult == "negative"){
+            Analyseresult = "负面新闻"
+        }else{
+            Analyseresult = "中立新闻"
+        }
+        return(
+            
+            <View>
+                <ListItem
+                    title={item.title}
+                    titleStyle={styles.title}
+                    subtitle={Analyseresult}
+                    subtitleStyle={styles.subTitle}
+                    bottomDivider
+                    onPress={() => this.setState({isVisible:index}) }//页面跳转并传递点击的项目的标识
+                />
 
+                <Overlay 
+                    isVisible={isVisible} 
+                    onBackdropPress={() => this.setState({ isVisible: -1 })}
+                    overlayStyle={styles.evaluationOverlay}
+                    fullScreen={true}
+                >
+                    <View style={{height: '2%'}}></View>
+                    <Text h4>{item.title}</Text>
+                    <Text style={{fontSize: 16}}>{item.publishtime}</Text>
+                    <View style={{height: '1%'}}></View>
+                    <ScrollView>
+                        <Text style={{fontSize: 20}}>{item.content}</Text>
+                    </ScrollView>
+                    <View style={{height: '2%'}}></View>
+                    <View style={{width:"80%"}}>
+                        <Button title="在浏览器中访问新闻页面"  onPress={() => Linking.openURL(item.source)} />
+                    </View>
+                    <View style={{height: '2%'}}></View>
+                </Overlay>
+            </View>
+    )}
+    keyExtractor = (item, index) => index.toString()//flatlist
+    render() {
+        return (
+            <View style={{ flex: 1}}>
+                 <View style={{justifyContent: 'center', height: '20%',backgroundColor:'white'}}>
+                    <Text style={styles.detialTitle}>新闻</Text>
+                </View>
+                <View style={{height: '0.2%'}}></View>
+                <FlatList
+                    keyExtractor={this.keyExtractor}
+                    data={this.state.data}
+                    renderItem={this.renderItem}
+                    //解决刷新问题，查的，不知道为嘛
+                    handleMethod = {({viewableItems}) => this.handleViewableItemsChanged(viewableItems)}
+                />
+            </View>
+        );
+    }
+}
 const styles = StyleSheet.create({
     avater: {
         width: 130,
@@ -655,6 +669,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         marginLeft: "10%",
+    },
+    subTitle: {
+        fontSize: 16,
+        textAlign:'right',
+        marginRight: "5%",
     },
     searchBarContiner: {
         borderWidth: 0.5,
@@ -808,9 +827,9 @@ const styles = StyleSheet.create({
     },
     rateSubmintButtenContiner: {
         // flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 50,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        width: "20%",
         marginHorizontal: 30,
         marginBottom: 10,
         marginTop: 5,
@@ -843,4 +862,4 @@ const styles = StyleSheet.create({
 });
 
 // Export components
-export { MuseumListHome, MuseumListDetail, MuseumListObject, MuseumListExhibition, MuseumListActivity };
+export { MuseumListHome, MuseumListDetail, MuseumListObject, MuseumListExhibition, MuseumListActivity, MuseumListNews };
