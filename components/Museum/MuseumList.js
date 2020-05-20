@@ -1,6 +1,6 @@
 // Import dependencies
 import React, { Component } from "react";
-import { FlatList, StyleSheet, View, AsyncStorage, TextInput, Alert, ScrollView, TouchableOpacity, Linking} from "react-native";
+import { FlatList, StyleSheet, View, AsyncStorage, TextInput, Alert, ScrollView, TouchableOpacity, Linking, Image} from "react-native";
 import { Button, ListItem, SearchBar, Rating, AirbnbRating, Card, Icon, Overlay, Text } from 'react-native-elements'
 import { useRoute } from '@react-navigation/native';
 list = [
@@ -142,12 +142,26 @@ class MuseumListDetail extends Component {
             comment: "",
             rateOverlayVisible: false,
             introOverlayVisible: false,
+            userid: "",
+            coright: '0',
         };
     
     }
     componentWillMount(){
         this.fetchData()
+        this.getUserid()
     } 
+    async getUserid(){
+        try{
+            let id
+            let coright
+            id = await AsyncStorage.getItem('userid');
+            coright = await AsyncStorage.getItem('coright');
+            this.setState({userid:id, coright:coright})
+        }catch(error){
+            Alert.alert(error)
+        }
+    }
     async fetchData(){
         await fetch('http://10.0.2.2:14816/api/maintables')
         .then((response) => response.json())
@@ -160,32 +174,36 @@ class MuseumListDetail extends Component {
             alert(error)
             );
     } 
-    rateCommit = () => {
-        let rateData = {
-            "midex": this.props.route.params.id,
-            "userid": "user22",
-            "exhscore": this.state.exhibitionRate,
-            "serscore": this.state.serviceRate,
-            "envscore": this.state.environmentRate,
-            "msg": this.state.comment
-        }
-        fetch('http://10.0.2.2:14816/api/Comments', {
-            method: 'POST', // or 'PUT'
-            headers: { Accept: 'application/json',
-                       'Content-Type': 'application/json',},
-            body: JSON.stringify(rateData), // data can be `string` or {object}!
-        })
-        .then(response => {
-            if(response.status == 409) {
-                alert("您已评价过该博物馆，可在用户界面进行修改！")
-            }else if(response.status == 201){
-                Alert.alert('评价成功')
+    rateCommit = async() => {
+        await this.getUserid()
+        if(this.state.coright === null || this.state.userid === null || this.state.coright === '0'){
+            Alert.alert('没有评价权限！')
+        }else{
+            let rateData = {
+                "midex": this.props.route.params.id,
+                "userid": this.state.userid,
+                "exhscore": this.state.exhibitionRate,
+                "serscore": this.state.serviceRate,
+                "envscore": this.state.environmentRate,
+                "msg": this.state.comment
             }
-        })
-        .catch(error =>
-            alert(error)
-            );
-        
+            fetch('http://10.0.2.2:14816/api/Comments', {
+                method: 'POST', // or 'PUT'
+                headers: { Accept: 'application/json',
+                           'Content-Type': 'application/json',},
+                body: JSON.stringify(rateData), // data can be `string` or {object}!
+            })
+            .then(response => {
+                if(response.status == 409) {
+                    alert("您已评价过该博物馆，可在用户界面进行修改！")
+                }else if(response.status == 201){
+                    Alert.alert('评价成功！')
+                }
+            })
+            .catch(error =>
+                alert(error)
+                );
+        }
     }
     render() {
         let data = {}
@@ -392,79 +410,77 @@ class MuseumListObject extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            data: [
-                {
-                    oid: 0,
-                    oname: '通鉴纪事本末',
-                    otime: '南宋(1127~1279)',
-                    oera: '',
-                    ointro: '',
-                    ophoto: '',
-                },
-                {
-                    oid: 1,
-                    oname: '资治通鉴纲目集览',
-                    otime: '明(1368~1644)',
-                    oera: '',
-                    ointro: '',
-                    ophoto: '',
-                },
-                {
-                    oid: 2,
-                    oname: '大明嘉靖二十三年岁次甲辰大统历',
-                    otime: '明(1368~1644)',
-                    oera: '',
-                    ointro: '',
-                    ophoto: '',
-                },
-                {
-                    oid: 3,
-                    oname: '通鉴纪事本末',
-                    otime: '南宋(1127~1279)',
-                    oera: '',
-                    ointro: '',
-                    ophoto: '',
-                },
-                {
-                    oid: 4,
-                    oname: '资治通鉴纲目集览',
-                    otime: '明(1368~1644)',
-                    oera: '',
-                    ointro: '',
-                    ophoto: '',
-                },
-                {
-                    oid: 5,
-                    oname: '大明嘉靖二十三年岁次甲辰大统历',
-                    otime: '明(1368~1644)',
-                    oera: '',
-                    ointro: '',
-                    ophoto: '',
-                },
-            ],
+            data: [],
             isVisible: -1,
         };
     }
+    componentWillMount(){
+        this.fetchData()
+    } 
+    async fetchData(){
+        let url='http://10.0.2.2:14816/api/collections/midex/'
+        url = url + this.props.route.params.id.toString()
+        await fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({
+                data : data
+            })
+        })
+        .catch(error =>
+            alert(error)
+            );
+    } 
     renderItem = ({item,index}) => {
+        let isVisible
+        if(index === this.state.isVisible){
+            isVisible = true
+        }else{
+            isVisible = false
+        }
         return(
-            this.state.isVisible === index
-            ?<TouchableOpacity onPress={() =>{this.setState({isVisible: -1})}}>
-                <View style={styles.showItemContainer}>
-                    <Text style={styles.showItemTitle}>{item.oname}</Text>
-                    <View style={{width: "100%", borderTopWidth: 2, borderColor: 'black', marginVertical: 10}} />
-                    <Text style={styles.showItemContent}>{item.otime}</Text>
-                </View>
-            </TouchableOpacity>
-            :<TouchableOpacity onPress={() =>{this.setState({isVisible: index})}}>
-                <View style={styles.showItemContainer}>
-                    <Text style={styles.showItemTitle}>{item.oname}</Text>
-                </View>
-            </TouchableOpacity>
+            <View>
+                <ListItem
+                    title={item.oname}
+                    titleStyle={{
+                        fontSize: 24,
+                        // marginLeft: "10%",
+                    }}
+                    // subtitle={item.subtitle}
+                    leftAvatar={{  source: { uri: item.ophoto } }}
+                    bottomDivider
+                    onPress={() => this.setState({isVisible:index}) }//页面跳转并传递点击的项目的标识
+                />
+
+                <Overlay 
+                    isVisible={isVisible} 
+                    onBackdropPress={() => this.setState({ rateOverlayVisible : false })}
+                    overlayStyle={styles.evaluationOverlay}
+                    fullScreen={true}
+                >
+                    <View style={{height: '3%'}}></View>
+                    <Text h4>{item.oname}</Text>
+                    <View style={{height: '3%'}}></View>
+                    <ScrollView>
+                        <Image style={{height:"20%",width:"100%",resizeMode:'contain' }} source={{uri: item.ophoto}}/>
+                        <View style={{height: '1%'}}></View>
+                        <Text style={{fontSize: 20}}>{item.ointro}</Text>
+                    </ScrollView>
+                    <View style={{height: '2%'}}></View>
+                    <View >
+                        <Button title="返回" onPress={() => this.setState({ isVisible : -1 })} />
+                    </View>
+                </Overlay>
+            </View>
         )}
     keyExtractor = (item, index) => index.toString()//flatlist
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flex: 1}}>
+                <View style={{justifyContent: 'center', height: '20%',backgroundColor:'white'}}>
+                    <Text style={styles.detialTitle}>藏品</Text>
+                </View>
+                <View style={{height: '0.2%'}}></View>
                 <FlatList
                     keyExtractor={this.keyExtractor}
                     data={this.state.data}
@@ -481,66 +497,72 @@ class MuseumListExhibition extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            data: [
-                {
-                    eid: 0,
-                    ename: '开幕向往经典——中国当代著名艺术家邀请展',
-                    etime: '展览时间： 2020/1/17',
-                    esite: '南6、南7展厅',
-                    eintro: '',
-                    ephoto: '',
-                },
-                {
-                    eid: 1,
-                    ename: '开幕瑞彩平安——2020新春展',
-                    etime: '展览时间： 2020/1/16',
-                    esite: '南8、南9展厅',
-                    eintro: '',
-                    ephoto: '',
-                },
-                {
-                    eid: 2,
-                    ename: '开幕向往经典——中国当代著名艺术家邀请展',
-                    etime: '展览时间： 2020/1/17',
-                    esite: '南6、南7展厅',
-                    eintro: '',
-                    ephoto: '',
-                },
-                {
-                    eid: 3,
-                    ename: '开幕瑞彩平安——2020新春展',
-                    etime: '展览时间： 2020/1/16',
-                    esite: '南8、南9展厅',
-                    eintro: '',
-                    ephoto: '',
-                },
-            ],
+            data: [],
             isVisible: -1,
         };
     }
+    componentWillMount(){
+        this.fetchData()
+    } 
+    async fetchData(){
+        let url='http://10.0.2.2:14816/api/Exhibitions/midex/'
+        url = url + this.props.route.params.id.toString()
+        await fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({
+                data : data
+            })
+        })
+        .catch(error =>
+            alert(error)
+            );
+    } 
     renderItem = ({item,index}) => {
+        let isVisible
+        if(index === this.state.isVisible){
+            isVisible = true
+        }else{
+            isVisible = false
+        }
         return(
-            this.state.isVisible === index
-            ?<TouchableOpacity onPress={() =>{this.setState({isVisible: -1})}}>
-                <View style={styles.showItemContainer}>
-                    <Text style={styles.showItemTitle}>{item.ename}</Text>
-                    <View style={{width: "100%", borderTopWidth: 2, borderColor: 'black', marginVertical: 10}} />
-                    <Text style={styles.showItemContent}>{item.etime}</Text>
-                    <View style={{width: "100%", borderTopWidth: 2, borderColor: 'black', marginVertical: 10}} />
-                    <Text style={styles.showItemContent}>{item.esite}</Text>
-                </View>
-            </TouchableOpacity>
-            :<TouchableOpacity onPress={() =>{this.setState({isVisible: index})}}>
-                <View style={styles.showItemContainer}>
-                    <Text style={styles.showItemTitle}>{item.ename}</Text>
-                </View>
-            </TouchableOpacity>
-            
+            <View>
+                <ListItem
+                    title={item.ename}
+                    titleStyle={styles.title}
+                    // subtitle={item.subtitle}
+                    // leftAvatar={{ style: styles.avater, source: { uri: item.picture_address } }}
+                    bottomDivider
+                    onPress={() => this.setState({isVisible:index}) }//页面跳转并传递点击的项目的标识
+                />
+
+                <Overlay 
+                    isVisible={isVisible} 
+                    onBackdropPress={() => this.setState({ rateOverlayVisible : false })}
+                    overlayStyle={styles.evaluationOverlay}
+                    fullScreen={true}
+                >
+                    <View style={{height: '3%'}}></View>
+                    <Text h4>{item.ename}简介</Text>
+                    <View style={{height: '3%'}}></View>
+                    <ScrollView>
+                        <Text style={{fontSize: 20}}>{item.eintro}</Text>
+                    </ScrollView>
+                    <View style={{height: '2%'}}></View>
+                    <View >
+                        <Button title="返回" onPress={() => this.setState({ isVisible : -1 })} />
+                    </View>
+                </Overlay>
+            </View>
     )}
     keyExtractor = (item, index) => index.toString()//flatlist
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flex: 1}}>
+                 <View style={{justifyContent: 'center', height: '20%',backgroundColor:'white'}}>
+                    <Text style={styles.detialTitle}>展览</Text>
+                </View>
+                <View style={{height: '0.2%'}}></View>
                 <FlatList
                     keyExtractor={this.keyExtractor}
                     data={this.state.data}
