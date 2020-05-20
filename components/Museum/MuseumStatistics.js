@@ -75,15 +75,17 @@ class MuseumStatisticsDetail_times extends Component {
   render() {
     return (
       <View>
-        <View>
-          {this.state.list_times.map((item, i) => (
-            <ListItem
-              key={i}
-              title={'第' + (i + 1) + '名   ' + item.mname}
-              bottomDivider
-            />
-          ))}
-        </View>
+        <ScrollView>
+          <View>
+            {this.state.list_times.map((item, i) => (
+              <ListItem
+                key={i}
+                title={'第' + (i + 1) + '名   ' + item.mname}
+                bottomDivider
+              />
+            ))}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -114,15 +116,17 @@ class MuseumStatisticsDetail_numbers extends Component {
   render() {
     return (
       <View>
-        <View>
-          {this.state.list_numbers.map((item, i) => (
-            <ListItem
-              key={i}
-              title={'第' + (i + 1) + '名   ' + item.mname}
-              bottomDivider
-            />
-          ))}
-        </View>
+        <ScrollView>
+          <View>
+            {this.state.list_numbers.map((item, i) => (
+              <ListItem
+                key={i}
+                title={'第' + (i + 1) + '名   ' + item.mname}
+                bottomDivider
+              />
+            ))}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -186,15 +190,17 @@ class MuseumStatisticsDetail_good_zonghe extends Component {
   render() {
     return (
       <View>
-        <View>
-          {this.state.list_good_zonghe.map((item, i) => (
-            <ListItem
-              key={i}
-              title={'第' + (i + 1) + '名   ' + item.mname}
-              bottomDivider
-            />
-          ))}
-        </View>
+        <ScrollView>
+          <View>
+            {this.state.list_good_zonghe.map((item, i) => (
+              <ListItem
+                key={i}
+                title={'第' + (i + 1) + '名   ' + item.mname}
+                bottomDivider
+              />
+            ))}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -225,15 +231,17 @@ class MuseumStatisticsDetail_good_fuwu extends Component {
   render() {
     return (
       <View>
-        <View>
-          {this.state.list_good_fuwu.map((item, i) => (
-            <ListItem
-              key={i}
-              title={'第' + (i + 1) + '名   ' + item.mname}
-              bottomDivider
-            />
-          ))}
-        </View>
+        <ScrollView>
+          <View>
+            {this.state.list_good_fuwu.map((item, i) => (
+              <ListItem
+                key={i}
+                title={'第' + (i + 1) + '名   ' + item.mname}
+                bottomDivider
+              />
+            ))}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -264,15 +272,17 @@ class MuseumStatisticsDetail_good_huanjing extends Component {
   render() {
     return (
       <View>
-        <View>
-          {this.state.list_good_huanjing.map((item, i) => (
-            <ListItem
-              key={i}
-              title={'第' + (i + 1) + '名   ' + item.mname}
-              bottomDivider
-            />
-          ))}
-        </View>
+        <ScrollView>
+          <View>
+            {this.state.list_good_huanjing.map((item, i) => (
+              <ListItem
+                key={i}
+                title={'第' + (i + 1) + '名   ' + item.mname}
+                bottomDivider
+              />
+            ))}
+          </View>
+        </ScrollView>
       </View>
     );
   }

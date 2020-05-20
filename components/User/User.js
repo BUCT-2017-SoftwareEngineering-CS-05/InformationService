@@ -12,6 +12,7 @@ const REQUEST_URL = 'http://10.0.2.2:14816/api/Users/'
 const REQUEST_COMMENT_URL = 'http://10.0.2.2:14816/api/Comments/userid/'
 const REQUEST_EDIT_COMMENT_URL = 'http://10.0.2.2:14816/api/Comments'
 const POST_URL = 'http://10.0.2.2:14816/api/Users'
+const REQUEST_MUSEUMINFO_URL ='http://10.0.2.2:14816/api/maintables/'
 
 function UserControl({ navigation }) {
   const [state, dispatch] = React.useReducer(
@@ -392,10 +393,13 @@ function CommentListScreen({navigation,route}){
       let url = REQUEST_COMMENT_URL+str
       let response = await fetch(url)
       let json = await response.json()
-      // for (var i=0;i<json.length;i++){
-      //   let mname=''
-        
-      // }
+      console.log(json.length)
+      for (var i=0;i<json.length;i++){
+        let u = REQUEST_MUSEUMINFO_URL+json[i]['midex']
+        let r = await fetch(u)
+        let j = await r.json()
+        json[i]['mname']=j['mname']
+      }
       dispatch({ type: 'BOOT', data:json })
     };
     bootstrapAsync();
@@ -406,7 +410,7 @@ function CommentListScreen({navigation,route}){
   var renderItem = ({ item }) => (
     <View>
       <Card
-        title={item.midex.toString()}
+        title={item.mname}
         >
         <View style={{marginBottom: 30}}>
           <View style={{ flexDirection:'row'}}>
