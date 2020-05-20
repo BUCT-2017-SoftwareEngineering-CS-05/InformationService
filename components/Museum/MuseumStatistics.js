@@ -12,6 +12,7 @@ import styled from 'styled-components/native';
 import {ScrollView} from 'react-native';
 import {SearchBar, ListItem, Card, Overlay} from 'react-native-elements';
 import {useRoute} from '@react-navigation/native';
+import {MuseumListDetail} from './MuseumList';
 
 class MuseumStatisticsHome extends Component {
   render() {
@@ -64,8 +65,8 @@ class MuseumStatisticsDetail_times extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/5')
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
           list_times: responseData,
         });
@@ -79,6 +80,12 @@ class MuseumStatisticsDetail_times extends Component {
           <View>
             {this.state.list_times.map((item, i) => (
               <ListItem
+                onPress={() =>
+                  this.props.navigation.navigate('MuseumListDetail', {
+                    id: item.midex,
+                    name: item.mname,
+                  })
+                }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
                 bottomDivider
@@ -106,8 +113,8 @@ class MuseumStatisticsDetail_numbers extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/4')
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
           list_numbers: responseData,
         });
@@ -120,6 +127,12 @@ class MuseumStatisticsDetail_numbers extends Component {
           <View>
             {this.state.list_numbers.map((item, i) => (
               <ListItem
+                onPress={() =>
+                  this.props.navigation.navigate('MuseumListDetail', {
+                    id: item.midex,
+                    name: item.mname,
+                  })
+                }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
                 bottomDivider
@@ -180,8 +193,8 @@ class MuseumStatisticsDetail_good_zonghe extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/1')
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
           list_good_zonghe: responseData,
         });
@@ -194,6 +207,12 @@ class MuseumStatisticsDetail_good_zonghe extends Component {
           <View>
             {this.state.list_good_zonghe.map((item, i) => (
               <ListItem
+                onPress={() =>
+                  this.props.navigation.navigate('MuseumListDetail', {
+                    id: item.midex,
+                    name: item.mname,
+                  })
+                }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
                 bottomDivider
@@ -221,8 +240,8 @@ class MuseumStatisticsDetail_good_fuwu extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/2')
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
           list_good_fuwu: responseData,
         });
@@ -235,6 +254,12 @@ class MuseumStatisticsDetail_good_fuwu extends Component {
           <View>
             {this.state.list_good_fuwu.map((item, i) => (
               <ListItem
+                onPress={() =>
+                  this.props.navigation.navigate('MuseumListDetail', {
+                    id: item.midex,
+                    name: item.mname,
+                  })
+                }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
                 bottomDivider
@@ -262,8 +287,8 @@ class MuseumStatisticsDetail_good_huanjing extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/3')
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
           list_good_huanjing: responseData,
         });
@@ -276,6 +301,12 @@ class MuseumStatisticsDetail_good_huanjing extends Component {
           <View>
             {this.state.list_good_huanjing.map((item, i) => (
               <ListItem
+                onPress={() =>
+                  this.props.navigation.navigate('MuseumListDetail', {
+                    id: item.midex,
+                    name: item.mname,
+                  })
+                }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
                 bottomDivider
