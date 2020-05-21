@@ -289,7 +289,7 @@ class MuseumListDetail extends Component {
                                     >
                     <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
                         <Icon
-                        name='file' 
+                        name='comment' 
                         type='octicon'
                         containerStyle={{marginRight:20}}
                         size={30}
@@ -306,7 +306,7 @@ class MuseumListDetail extends Component {
                 </View>
                         
                 <View style={{width: '80%', left: '10%' }}>
-                    <Button title="我要评价" onPress={() => this.setState({ rateOverlayVisible : true })}/>
+                    <Button title="发表评价" onPress={() => this.setState({ rateOverlayVisible : true })}/>
                 </View>  
                 {/* 简介 */}
                 <Overlay 
