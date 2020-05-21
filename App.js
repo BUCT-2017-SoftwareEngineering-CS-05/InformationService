@@ -7,7 +7,14 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Icon} from 'react-native-elements';
 
 // Import components
-import { MuseumListHome, MuseumListDetail, MuseumListObject, MuseumListExhibition, MuseumListActivity, MuseumListNews} from './components/Museum/MuseumList';
+import {
+  MuseumListHome,
+  MuseumListDetail,
+  MuseumListObject,
+  MuseumListExhibition,
+  MuseumListActivity,
+  MuseumListNews,
+} from './components/Museum/MuseumList';
 import {
   MuseumStatisticsHome,
   MuseumStatisticsDetail_times,
@@ -16,8 +23,11 @@ import {
   MuseumStatisticsDetail_good_zonghe,
   MuseumStatisticsDetail_good_fuwu,
   MuseumStatisticsDetail_good_huanjing,
+  Chart1,
+  Chart2,
+  Chart3,
 } from './components/Museum/MuseumStatistics';
-import { UserControl } from './components/User/User';
+import {UserControl} from './components/User/User';
 
 // Disable warning
 console.disableYellowBox = true;
@@ -29,12 +39,42 @@ const Stack = createStackNavigator();
 function MuseumListStackScreen({navigation, route}) {
   return (
     <Stack.Navigator headerMode="none">
-      <Stack.Screen name="MuseumListHome" component={ MuseumListHome } navigation={navigation} route={route} />
-      <Stack.Screen name="MuseumListDetail" component={ MuseumListDetail} navigation={navigation} route={route} />
-      <Stack.Screen name="MuseumListObject" component={ MuseumListObject} navigation={navigation} route={route} />
-      <Stack.Screen name="MuseumListExhibition" component={ MuseumListExhibition} navigation={navigation} route={route} />
-      <Stack.Screen name="MuseumListActivity" component={ MuseumListActivity} navigation={navigation} route={route} />
-      <Stack.Screen name="MuseumListNews" component={ MuseumListNews} navigation={navigation} route={route} />
+      <Stack.Screen
+        name="MuseumListHome"
+        component={MuseumListHome}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="MuseumListDetail"
+        component={MuseumListDetail}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="MuseumListObject"
+        component={MuseumListObject}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="MuseumListExhibition"
+        component={MuseumListExhibition}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="MuseumListActivity"
+        component={MuseumListActivity}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="MuseumListNews"
+        component={MuseumListNews}
+        navigation={navigation}
+        route={route}
+      />
     </Stack.Navigator>
   );
 }
@@ -81,6 +121,24 @@ function MuseumStatisticsStackScreen({navigation, route}) {
       <Stack.Screen
         name="MuseumStatisticsDetail_good_huanjing"
         component={MuseumStatisticsDetail_good_huanjing}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="Chart1"
+        component={Chart1}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="Chart2"
+        component={Chart2}
+        navigation={navigation}
+        route={route}
+      />
+      <Stack.Screen
+        name="Chart3"
+        component={Chart3}
         navigation={navigation}
         route={route}
       />
@@ -134,7 +192,7 @@ export default function App() {
           inactiveTintColor: 'gray',
         }}>
         <BottomTab.Screen name="Museum" component={MuseumTopNavigator} />
-        <BottomTab.Screen name="User" component={ UserControl } />
+        <BottomTab.Screen name="User" component={UserControl} />
       </BottomTab.Navigator>
     </NavigationContainer>
   );

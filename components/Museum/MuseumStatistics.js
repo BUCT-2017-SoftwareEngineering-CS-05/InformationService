@@ -13,6 +13,13 @@ import {ScrollView} from 'react-native';
 import {SearchBar, ListItem, Card, Overlay} from 'react-native-elements';
 import {useRoute} from '@react-navigation/native';
 import {MuseumListDetail} from './MuseumList';
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryTheme,
+  VictoryGroup,
+  VictoryPie,
+} from 'victory-native';
 
 class MuseumStatisticsHome extends Component {
   render() {
@@ -65,8 +72,8 @@ class MuseumStatisticsDetail_times extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/5')
-      .then((response) => response.json())
-      .then((responseData) => {
+      .then(response => response.json())
+      .then(responseData => {
         this.setState({
           list_times: responseData,
         });
@@ -88,6 +95,7 @@ class MuseumStatisticsDetail_times extends Component {
                 }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
+                titleStyle={{fontSize: 24}}
                 bottomDivider
               />
             ))}
@@ -113,8 +121,8 @@ class MuseumStatisticsDetail_numbers extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/4')
-      .then((response) => response.json())
-      .then((responseData) => {
+      .then(response => response.json())
+      .then(responseData => {
         this.setState({
           list_numbers: responseData,
         });
@@ -135,6 +143,7 @@ class MuseumStatisticsDetail_numbers extends Component {
                 }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
+                titleStyle={{fontSize: 24}}
                 bottomDivider
               />
             ))}
@@ -193,8 +202,8 @@ class MuseumStatisticsDetail_good_zonghe extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/1')
-      .then((response) => response.json())
-      .then((responseData) => {
+      .then(response => response.json())
+      .then(responseData => {
         this.setState({
           list_good_zonghe: responseData,
         });
@@ -208,13 +217,14 @@ class MuseumStatisticsDetail_good_zonghe extends Component {
             {this.state.list_good_zonghe.map((item, i) => (
               <ListItem
                 onPress={() =>
-                  this.props.navigation.navigate('MuseumListDetail', {
+                  this.props.navigation.navigate('Chart3', {
                     id: item.midex,
                     name: item.mname,
                   })
                 }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
+                titleStyle={{fontSize: 24}}
                 bottomDivider
               />
             ))}
@@ -240,8 +250,8 @@ class MuseumStatisticsDetail_good_fuwu extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/2')
-      .then((response) => response.json())
-      .then((responseData) => {
+      .then(response => response.json())
+      .then(responseData => {
         this.setState({
           list_good_fuwu: responseData,
         });
@@ -255,13 +265,14 @@ class MuseumStatisticsDetail_good_fuwu extends Component {
             {this.state.list_good_fuwu.map((item, i) => (
               <ListItem
                 onPress={() =>
-                  this.props.navigation.navigate('MuseumListDetail', {
+                  this.props.navigation.navigate('Chart1', {
                     id: item.midex,
                     name: item.mname,
                   })
                 }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
+                titleStyle={{fontSize: 24}}
                 bottomDivider
               />
             ))}
@@ -287,8 +298,8 @@ class MuseumStatisticsDetail_good_huanjing extends Component {
 
   fetchData() {
     fetch('http://10.0.2.2:14816/api/maintables/One/3')
-      .then((response) => response.json())
-      .then((responseData) => {
+      .then(response => response.json())
+      .then(responseData => {
         this.setState({
           list_good_huanjing: responseData,
         });
@@ -302,13 +313,14 @@ class MuseumStatisticsDetail_good_huanjing extends Component {
             {this.state.list_good_huanjing.map((item, i) => (
               <ListItem
                 onPress={() =>
-                  this.props.navigation.navigate('MuseumListDetail', {
+                  this.props.navigation.navigate('Chart2', {
                     id: item.midex,
                     name: item.mname,
                   })
                 }
                 key={i}
                 title={'第' + (i + 1) + '名   ' + item.mname}
+                titleStyle={{fontSize: 24}}
                 bottomDivider
               />
             ))}
@@ -319,6 +331,168 @@ class MuseumStatisticsDetail_good_huanjing extends Component {
   }
 }
 
+class Chart1 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    let id = this.props.route.params.id;
+    let name = this.props.route.params.name;
+    let url1 = 'http://10.0.2.2:14816/api/Comments/analysis1/' + id.toString();
+    fetch(url1)
+      .then(response => response.json())
+      .then(responseData => {
+        this.setState({
+          data: responseData,
+        });
+      });
+  }
+
+  render() {
+    let mid = this.props.route.params.id;
+    let mname = this.props.route.params.name;
+    return (
+      <View style={{alignItems: 'center', margin: 15}}>
+        <Text style={{fontSize: 40, margin: 10}}>{mname}</Text>
+
+        <VictoryPie
+          data={this.state.data}
+          offset={20}
+          colorScale={'qualitative'}
+        />
+
+        <View style={{borderTopWidth: 20, borderTopColor: 'rgb(242,242,242)'}}>
+          <Button
+            title={'查看博物馆详细信息'}
+            onPress={() =>
+              this.props.navigation.navigate('MuseumListDetail', {
+                id: mid,
+                name: mname,
+              })
+            }
+          />
+        </View>
+      </View>
+    );
+  }
+}
+class Chart2 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    let id = this.props.route.params.id;
+    let name = this.props.route.params.name;
+    let url1 = 'http://10.0.2.2:14816/api/Comments/analysis2/' + id.toString();
+    fetch(url1)
+      .then(response => response.json())
+      .then(responseData => {
+        this.setState({
+          data: responseData,
+        });
+      });
+  }
+
+  render() {
+    let mid = this.props.route.params.id;
+    let mname = this.props.route.params.name;
+    return (
+      <View style={{alignItems: 'center', margin: 15}}>
+        <Text style={{fontSize: 40, margin: 10}}>{mname}</Text>
+
+        <VictoryPie
+          data={this.state.data}
+          offset={20}
+          colorScale={'qualitative'}
+        />
+
+        <View style={{borderTopWidth: 20, borderTopColor: 'rgb(242,242,242)'}}>
+          <Button
+            title={'查看博物馆详细信息'}
+            onPress={() =>
+              this.props.navigation.navigate('MuseumListDetail', {
+                id: mid,
+                name: mname,
+              })
+            }
+          />
+        </View>
+      </View>
+    );
+  }
+}
+class Chart3 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    let id = this.props.route.params.id;
+    let name = this.props.route.params.name;
+    let url1 = 'http://10.0.2.2:14816/api/Comments/analysis3/' + id.toString();
+    fetch(url1)
+      .then(response => response.json())
+      .then(responseData => {
+        this.setState({
+          data: responseData,
+        });
+      });
+  }
+
+  render() {
+    let mid = this.props.route.params.id;
+    let mname = this.props.route.params.name;
+    return (
+      <View style={{alignItems: 'center', margin: 15}}>
+        <Text style={{fontSize: 40, margin: 10}}>{mname}</Text>
+
+        <VictoryPie
+          data={this.state.data}
+          offset={20}
+          colorScale={'qualitative'}
+        />
+
+        <View style={{borderTopWidth: 20, borderTopColor: 'rgb(242,242,242)'}}>
+          <Button
+            title={'查看博物馆详细信息'}
+            onPress={() =>
+              this.props.navigation.navigate('MuseumListDetail', {
+                id: mid,
+                name: mname,
+              })
+            }
+          />
+        </View>
+      </View>
+    );
+  }
+}
 // Export components
 export {
   MuseumStatisticsHome,
@@ -328,6 +502,9 @@ export {
   MuseumStatisticsDetail_good_zonghe,
   MuseumStatisticsDetail_good_fuwu,
   MuseumStatisticsDetail_good_huanjing,
+  Chart1,
+  Chart2,
+  Chart3,
 };
 
 const Container = styled.View`
