@@ -65,7 +65,7 @@ function UserControl({ navigation }) {
     };
 
     bootstrapAsync();
-  }, []);
+  }, [state.usertoken]);
 
   const authContext = React.useMemo(
     () => ({
@@ -81,7 +81,7 @@ function UserControl({ navigation }) {
           else{
             await AsyncStorage.setItem('usertoken',json['userpwd'])
             await AsyncStorage.setItem('userid',json['userid'])
-            await AsyncStorage.setItem('coright',json['coright'])
+            await AsyncStorage.setItem('coright',json['coright'].toString())
             dispatch({ type: 'SIGN_IN', token: json['userpwd'] })
           }
         }
@@ -129,6 +129,7 @@ function UserControl({ navigation }) {
       signOut: async () => {
         await AsyncStorage.removeItem('usertoken')
         await AsyncStorage.removeItem('userid')
+        await AsyncStorage.removeItem('coright')
         dispatch({ type: 'SIGN_OUT' })
       },
     }),
