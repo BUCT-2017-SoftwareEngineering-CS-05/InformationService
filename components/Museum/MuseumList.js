@@ -184,7 +184,7 @@ class MuseumListDetail extends Component {
                 </View>
                 <View style={{height: '1%'}}></View>
                 <View style={{height: '70%'}}>
-                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'18%',backgroundColor:'white'}}
+                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'15%',backgroundColor:'white'}}
                                     onPress={() => this.setState({ introOverlayVisible : true })}
                                     >
                     <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
@@ -204,7 +204,7 @@ class MuseumListDetail extends Component {
                     </View>
                     </TouchableOpacity>
                     <View style={{height: '1%'}}></View>
-                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'18%',backgroundColor:'white'}}
+                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'15%',backgroundColor:'white'}}
                                     onPress={() => this.props.navigation.navigate('MuseumListExhibition', { id: this.props.route.params.id })}
                                     >
                     <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
@@ -224,7 +224,7 @@ class MuseumListDetail extends Component {
                     </View>
                     </TouchableOpacity>
                     <View style={{height: '1%'}}></View>
-                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'18%',backgroundColor:'white'}}
+                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'15%',backgroundColor:'white'}}
                                     onPress={() => this.props.navigation.navigate('MuseumListActivity', { id: this.props.route.params.id })}
                                     >
                     <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
@@ -244,7 +244,7 @@ class MuseumListDetail extends Component {
                     </View>
                     </TouchableOpacity>
                     <View style={{height: '1%'}}></View>
-                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'18%',backgroundColor:'white'}}
+                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'15%',backgroundColor:'white'}}
                                     onPress={() => this.props.navigation.navigate('MuseumListObject', { id: this.props.route.params.id })}
                                     >
                     <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
@@ -264,7 +264,7 @@ class MuseumListDetail extends Component {
                     </View>
                     </TouchableOpacity>
                     <View style={{height: '1%'}}></View>
-                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'18%',backgroundColor:'white'}}
+                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'15%',backgroundColor:'white'}}
                                     onPress={() => this.props.navigation.navigate('MuseumListNews', { name: this.props.route.params.name })}
                                     >
                     <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
@@ -277,6 +277,26 @@ class MuseumListDetail extends Component {
                         <Text
                         style={{fontSize:20}}
                         >新闻</Text>
+                        <Icon
+                        name='chevron-right'
+                        containerStyle={{flex:1,float:'right',left:'75%'}}
+                        />
+                    </View>
+                    </TouchableOpacity>
+                    <View style={{height: '1%'}}></View>
+                    <TouchableOpacity style={{ paddingleft: '10%',flexDirection: 'row',alignItems:'center',height:'15%',backgroundColor:'white'}}
+                                    onPress={() => this.props.navigation.navigate('MuseumListComment', { id: this.props.route.params.id })}
+                                    >
+                    <View style={{  left: '12%',flexDirection: 'row',alignItems:'center',}}>
+                        <Icon
+                        name='file' 
+                        type='octicon'
+                        containerStyle={{marginRight:20}}
+                        size={30}
+                        />
+                        <Text
+                        style={{fontSize:20}}
+                        >评论</Text>
                         <Icon
                         name='chevron-right'
                         containerStyle={{flex:1,float:'right',left:'75%'}}
@@ -660,6 +680,64 @@ class MuseumListNews extends Component{
         );
     }
 }
+class MuseumListComment extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+        };
+    }
+    componentWillMount(){
+        this.fetchData()
+    } 
+    async fetchData(){
+        let url='http://10.0.2.2:14816/api/Comments/midex/'
+        url = url + this.props.route.params.id.toString()
+        await fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({
+                data : data
+            })
+        })
+        .catch(error =>
+            alert(error)
+            );
+    } 
+    renderItem = ({item,index}) => {
+        return(
+            <View>
+                <ListItem
+                    title={item.msg}
+                    subtitle={item.userid}
+                    titleStyle={{
+                        fontSize: 20,
+                        left:"5%"
+                    }}
+                    subtitleStyle={styles.subTitle}
+                    bottomDivider
+                />
+            </View>
+        )}
+    keyExtractor = (item, index) => index.toString()//flatlist
+    render() {
+        return (
+            <View style={{ flex: 1}}>
+                <View style={{justifyContent: 'center', height: '20%',backgroundColor:'white'}}>
+        <Text style={styles.detialTitle}>评论</Text>
+                </View>
+                <View style={{height: '0.2%'}}></View>
+                <FlatList
+                    keyExtractor={this.keyExtractor}
+                    data={this.state.data}
+                    renderItem={this.renderItem}
+                    //解决刷新问题，查的，不知道为嘛
+                    handleMethod = {({viewableItems}) => this.handleViewableItemsChanged(viewableItems)}
+                />
+            </View>
+        );
+    }
+}
 const styles = StyleSheet.create({
     avater: {
         width: 130,
@@ -862,4 +940,4 @@ const styles = StyleSheet.create({
 });
 
 // Export components
-export { MuseumListHome, MuseumListDetail, MuseumListObject, MuseumListExhibition, MuseumListActivity, MuseumListNews };
+export { MuseumListHome, MuseumListDetail, MuseumListObject, MuseumListExhibition, MuseumListActivity, MuseumListNews, MuseumListComment };
