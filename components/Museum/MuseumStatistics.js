@@ -64,7 +64,7 @@ class MuseumStatisticsDetail_times extends Component {
   }
 
   fetchData() {
-    fetch('http://10.0.2.2:14816/api/maintables/One/5')
+    fetch('http://144.202.86.233:5000/api/maintables/One/5')
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
@@ -112,7 +112,7 @@ class MuseumStatisticsDetail_numbers extends Component {
   }
 
   fetchData() {
-    fetch('http://10.0.2.2:14816/api/maintables/One/4')
+    fetch('http://144.202.86.233:5000/api/maintables/One/4')
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
@@ -192,7 +192,7 @@ class MuseumStatisticsDetail_good_zonghe extends Component {
   }
 
   fetchData() {
-    fetch('http://10.0.2.2:14816/api/maintables/One/1')
+    fetch('http://144.202.86.233:5000/api/maintables/One/1')
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
@@ -239,7 +239,7 @@ class MuseumStatisticsDetail_good_fuwu extends Component {
   }
 
   fetchData() {
-    fetch('http://10.0.2.2:14816/api/maintables/One/2')
+    fetch('http://144.202.86.233:5000/api/maintables/One/2')
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
@@ -286,7 +286,7 @@ class MuseumStatisticsDetail_good_huanjing extends Component {
   }
 
   fetchData() {
-    fetch('http://10.0.2.2:14816/api/maintables/One/3')
+    fetch('http://144.202.86.233:5000/api/maintables/One/3')
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({

@@ -8,11 +8,11 @@ import { useRoute } from '@react-navigation/native'
 
 const AuthContext = React.createContext();
 const Stack = createStackNavigator();
-const REQUEST_URL = 'http://10.0.2.2:14816/api/Users/'
-const REQUEST_COMMENT_URL = 'http://10.0.2.2:14816/api/Comments/userid/'
-const REQUEST_EDIT_COMMENT_URL = 'http://10.0.2.2:14816/api/Comments'
-const POST_URL = 'http://10.0.2.2:14816/api/Users'
-const REQUEST_MUSEUMINFO_URL ='http://10.0.2.2:14816/api/maintables/'
+const REQUEST_URL = 'http://144.202.86.233:5000/api/Users/'
+const REQUEST_COMMENT_URL = 'http://144.202.86.233:5000/api/Comments/userid/'
+const REQUEST_EDIT_COMMENT_URL = 'http://144.202.86.233:5000/api/Comments'
+const POST_URL = 'http://144.202.86.233:5000/api/Users'
+const REQUEST_MUSEUMINFO_URL ='http://144.202.86.233:5000/api/maintables/'
 
 function UserControl({ navigation }) {
   const [state, dispatch] = React.useReducer(

@@ -16,7 +16,7 @@ class MuseumListHome extends Component {
         this.fetchData()
     } 
     async fetchData(){
-        await fetch('http://10.0.2.2:14816/api/maintables')
+        await fetch('http://144.202.86.233:5000/api/maintables')
         .then((response) => response.json())
         .then((data) => {
             this.setState({
@@ -125,7 +125,7 @@ class MuseumListDetail extends Component {
         }
     }
     async fetchData(){
-        await fetch('http://10.0.2.2:14816/api/maintables')
+        await fetch('http://144.202.86.233:5000/api/maintables')
         .then((response) => response.json())
         .then((data) => {
             this.setState({
@@ -149,7 +149,7 @@ class MuseumListDetail extends Component {
                 "envscore": this.state.environmentRate,
                 "msg": this.state.comment
             }
-            fetch('http://10.0.2.2:14816/api/Comments', {
+            fetch('http://144.202.86.233:5000/api/Comments', {
                 method: 'POST', // or 'PUT'
                 headers: { Accept: 'application/json',
                            'Content-Type': 'application/json',},
@@ -371,7 +371,7 @@ class MuseumListObject extends Component{
         this.fetchData()
     } 
     async fetchData(){
-        let url='http://10.0.2.2:14816/api/collections/midex/'
+        let url='http://144.202.86.233:5000/api/collections/midex/'
         url = url + this.props.route.params.id.toString()
         await fetch(url)
         .then((response) => response.json())
@@ -451,7 +451,7 @@ class MuseumListExhibition extends Component{
         this.fetchData()
     } 
     async fetchData(){
-        let url='http://10.0.2.2:14816/api/Exhibitions/midex/'
+        let url='http://144.202.86.233:5000/api/Exhibitions/midex/'
         url = url + this.props.route.params.id.toString()
         await fetch(url)
         .then((response) => response.json())
@@ -526,7 +526,7 @@ class MuseumListActivity extends Component{
         this.fetchData()
     } 
     async fetchData(){
-        let url='http://10.0.2.2:14816/api/Educations/midex/'
+        let url='http://144.202.86.233:5000/api/Educations/midex/'
         url = url + this.props.route.params.id.toString()
         await fetch(url)
         .then((response) => response.json())
@@ -579,7 +579,7 @@ class MuseumListNews extends Component{
         this.fetchData()
     } 
     async fetchData(){
-        let url='http://10.0.2.2:14816/api/News/One/'
+        let url='http://144.202.86.233:5000/api/News/One/'
         url = url + this.props.route.params.name.toString()
         await fetch(url)
         .then((response) => response.json())
